@@ -2,7 +2,7 @@ CREATE DATABASE epic_games;
 
 \c epic_games;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE games (
+CREATE TABLE IF NOT EXISTS games (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     developer VARCHAR(100) NOT NULL,
@@ -18,8 +18,9 @@ CREATE TABLE games (
     release_date DATE NOT NULL,
     price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
     is_free BOOLEAN DEFAULT FALSE
+);
 
-CREATE TABLE purchases (
+CREATE TABLE IF NOT EXISTS purchases (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     game_id INT REFERENCES games(id) ON DELETE CASCADE,
@@ -29,7 +30,7 @@ CREATE TABLE purchases (
     UNIQUE(user_id, game_id)
 );
 
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     game_id INT REFERENCES games(id) ON DELETE CASCADE,
@@ -39,7 +40,7 @@ CREATE TABLE reviews (
     UNIQUE(user_id, game_id)
 );
 
-CREATE TABLE wishlist (
+CREATE TABLE IF NOT EXISTS wishlist (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     game_id INT REFERENCES games(id) ON DELETE CASCADE,
@@ -47,7 +48,7 @@ CREATE TABLE wishlist (
     UNIQUE(user_id, game_id)
 );
 
-CREATE TABLE game_library (
+CREATE TABLE IF NOT EXISTS game_library (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     game_id INT REFERENCES games(id) ON DELETE CASCADE,
@@ -55,7 +56,7 @@ CREATE TABLE game_library (
     UNIQUE(user_id, game_id)
 );
 
-CREATE TABLE promotions (
+CREATE TABLE IF NOT EXISTS promotions (
     id SERIAL PRIMARY KEY,
     game_id INT REFERENCES games(id) ON DELETE CASCADE,
     discount_percentage INT CHECK (discount_percentage BETWEEN 0 AND 100),
@@ -64,7 +65,7 @@ CREATE TABLE promotions (
     is_free_event BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE friends (
+CREATE TABLE IF NOT EXISTS friends (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     friend_id INT REFERENCES users(id) ON DELETE CASCADE,
