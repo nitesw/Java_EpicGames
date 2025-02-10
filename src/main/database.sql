@@ -20,6 +20,11 @@ CREATE TABLE IF NOT EXISTS games (
     is_free BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE Genres (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS purchases (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
@@ -48,28 +53,28 @@ CREATE TABLE IF NOT EXISTS wishlist (
     UNIQUE(user_id, game_id)
 );
 
-CREATE TABLE IF NOT EXISTS game_library (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id) ON DELETE CASCADE,
-    game_id INT REFERENCES games(id) ON DELETE CASCADE,
-    added_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(user_id, game_id)
-);
+--CREATE TABLE IF NOT EXISTS game_library (
+--    id SERIAL PRIMARY KEY,
+--    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+--    game_id INT REFERENCES games(id) ON DELETE CASCADE,
+--    added_at TIMESTAMP DEFAULT NOW(),
+--    UNIQUE(user_id, game_id)
+--);
 
-CREATE TABLE IF NOT EXISTS promotions (
-    id SERIAL PRIMARY KEY,
-    game_id INT REFERENCES games(id) ON DELETE CASCADE,
-    discount_percentage INT CHECK (discount_percentage BETWEEN 0 AND 100),
-    start_date TIMESTAMP NOT NULL,
-    end_date TIMESTAMP NOT NULL,
-    is_free_event BOOLEAN DEFAULT FALSE
-);
+--CREATE TABLE IF NOT EXISTS promotions (
+--    id SERIAL PRIMARY KEY,
+--    game_id INT REFERENCES games(id) ON DELETE CASCADE,
+--    discount_percentage INT CHECK (discount_percentage BETWEEN 0 AND 100),
+--    start_date TIMESTAMP NOT NULL,
+--    end_date TIMESTAMP NOT NULL,
+--    is_free_event BOOLEAN DEFAULT FALSE
+--);
 
-CREATE TABLE IF NOT EXISTS friends (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id) ON DELETE CASCADE,
-    friend_id INT REFERENCES users(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT NOW(),
-    CHECK (user_id <> friend_id),
-    UNIQUE(user_id, friend_id)
-);
+--CREATE TABLE IF NOT EXISTS friends (
+--    id SERIAL PRIMARY KEY,
+--    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+--    friend_id INT REFERENCES users(id) ON DELETE CASCADE,
+--    created_at TIMESTAMP DEFAULT NOW(),
+--    CHECK (user_id <> friend_id),
+--    UNIQUE(user_id, friend_id)
+--);
